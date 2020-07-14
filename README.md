@@ -6,7 +6,6 @@ Easy multiprocessing in nodejs
 [![License](https://img.shields.io/npm/l/node-multiprocess.svg)](https://github.com/scottjr632/node-multiprocess/blob/master/package.json)
 
 <!-- toc -->
-- [Easy multiprocessing in nodejs](#easy-multiprocessing-in-nodejs)
 - [About](#about)
 - [Install](#install)
 - [Usage](#usage)
