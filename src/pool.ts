@@ -4,16 +4,11 @@ import { fork, ChildProcess } from 'child_process';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { Job, AnyFunc, ArgumentTypes, Result } from './types';
+import { Job, AnyFunc, ArgumentTypes, Result, ListenEvent } from './types';
 
 const MAX_PROCESSES = os.cpus().length;
 const TO_SECONDS = 1000;
 const MINUTE_SECONDS = 60;
-
-interface ListenEvent {
-  resolver: (data: any) => void;
-  timeout: NodeJS.Timeout;
-}
 
 const listeners = new Map<string, ListenEvent>();
 

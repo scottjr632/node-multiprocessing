@@ -1,51 +1,11 @@
 import path from 'path';
 import { clearInterval } from 'timers';
-import { fork, ChildProcess } from 'child_process';
+import { fork } from 'child_process';
 
-import { Job } from './types';
+import { Job, Worker } from './types';
+import { Queue } from './queue';
 
 const DESTROY_INTERVAL = 500;
-
-interface Worker {
-  id: number;
-  worker: ChildProcess;
-}
-
-interface QueueNode<T> {
-  value: T;
-  next: QueueNode<T> | null;
-}
-
-class Queue<T> {
-  public head: QueueNode<T> | null;
-  public end: QueueNode<T> | null;
-
-  constructor(head?: QueueNode<T>) {
-    this.head = head || null;
-    this.end = head || null;
-  }
-
-  add(worker: T) {
-    const newNode: QueueNode<T> = { value: worker, next: null };
-    if (this.end) {
-      this.end.next = newNode;
-    } else {
-      this.head = newNode;
-    }
-    this.end = newNode;
-  }
-
-  pop(): T | null {
-    const popped = this.head;
-    if (this.head === this.end) {
-      this.end = null;
-    }
-    if (this.head) {
-      this.head = this.head.next;
-    }
-    return popped?.value || null;
-  }
-}
 
 const availableWorkers: Queue<Worker> = new Queue();
 const awaitingJobs: Queue<Job> = new Queue();
