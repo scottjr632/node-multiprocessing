@@ -1,0 +1,25 @@
+{
+  "name": "ipc-node-worker",
+  "version": "0.0.1",
+  "description": "Node worker processes",
+  "main": "index.js",
+  "author": "Scott Richardson <scottjr632@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "tsc:init": "tsc -init",
+    "clean": "rm -rf ./dist",
+    "build": "npm run clean && tsc",
+    "build:run": "npm run build && node --trace-warnings dist/index.js"
+  },
+  "devDependencies": {
+    "@types/is-promise": "^2.1.0",
+    "@types/node": "^14.0.23",
+    "@types/uuid": "^8.0.0",
+    "tslib": "^2.0.0",
+    "typescript": "^3.9.6"
+  },
+  "dependencies": {
+    "is-promise": "^4.0.0",
+    "uuid": "^8.2.0"
+  }
+}
