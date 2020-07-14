@@ -1,8 +1,10 @@
 import path from 'path';
+import { clearInterval } from 'timers';
 import { fork, ChildProcess } from 'child_process';
 
 import { Job } from './types';
-import { clearInterval } from 'timers';
+
+const DESTROY_INTERVAL = 500;
 
 interface Worker {
   id: number;
@@ -24,7 +26,7 @@ class Queue<T> {
   }
 
   add(worker: T) {
-    const newNode: QueueNode<T> = { value: worker, next: null }
+    const newNode: QueueNode<T> = { value: worker, next: null };
     if (this.end) {
       this.end.next = newNode;
     } else {
@@ -54,17 +56,17 @@ const workerCallback = (worker: Worker): (res: any) => void => {
     if (process.send) {
       process.send(res);
     }
-  }
-}
+  };
+};
 
 process.on('message', (msg: Job) => {
   if (msg.type === 'create' && msg.args.length > 0) {
     for (let i = 0; i < msg.args[0]; i++) {
-      const worker = fork(path.resolve(__dirname, './worker.js'))
+      const worker = fork(path.resolve(__dirname, './worker.js'));
       const newWorker = {
         id: i + 1,
         worker,
-      }
+      };
       worker.on('message', workerCallback(newWorker));
       availableWorkers.add(newWorker);
     }
@@ -85,9 +87,9 @@ process.on('message', (msg: Job) => {
         }
         clearInterval(destroyTimer);
       }
-    }, 500);
+    }, DESTROY_INTERVAL);
   }
-})
+});
 
 // main event loop
 setInterval(() => {
@@ -100,4 +102,4 @@ setInterval(() => {
       availableWorkers.add(worker);
     }
   }
-}, 1)
+}, 1);

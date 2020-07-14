@@ -11,7 +11,7 @@ process.on('message', async (job: Job) => {
   if (process.send) {
     process.send({
       data,
-      id: job.id
-    })
+      id: job.id,
+    });
   }
-})
+});

@@ -2,14 +2,16 @@ import os from 'os';
 import path from 'path';
 import { fork, ChildProcess } from 'child_process';
 
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid';
+
 import { Job, AnyFunc, ArgumentTypes, Result } from './types';
 
 const MAX_PROCESSES = os.cpus().length;
 const TO_SECONDS = 1000;
+const MINUTE_SECONDS = 60;
 
 interface ListenEvent {
-  resolver: (data: any) => void; 
+  resolver: (data: any) => void;
   timeout: NodeJS.Timeout;
 }
 
@@ -17,7 +19,7 @@ const listeners = new Map<string, ListenEvent>();
 
 export class Pool {
   static MAX_PROCESSES = MAX_PROCESSES;
-  static TIMEOUT = 60; // default 60 seconds
+  static TIMEOUT = MINUTE_SECONDS; // default 60 seconds
 
   private id: string;
   private master: ChildProcess;
@@ -32,7 +34,7 @@ export class Pool {
       type: 'create',
       fn: (() => {}).toString(),
       args: [numProcesses || Pool.MAX_PROCESSES],
-    })
+    });
   }
 
   private instantiate() {
@@ -42,7 +44,7 @@ export class Pool {
         clearTimeout(event.timeout);
         event.resolver(result.data);
       }
-    })
+    });
   }
 
   private send(job: Job) {
@@ -50,21 +52,21 @@ export class Pool {
   }
 
   async addJob<TFunction extends AnyFunc>(fn: TFunction,
-      ...args: ArgumentTypes<TFunction>): Promise<ReturnType<TFunction>> {
+    ...args: ArgumentTypes<TFunction>): Promise<ReturnType<TFunction>> {
 
     const id = uuidv4();
-    this.send({ fn: fn.toString(), args, id, type: 'job' })
+    this.send({ fn: fn.toString(), args, id, type: 'job' });
 
     return new Promise((resolver, reject) => {
       const timeout = setTimeout(() => {
-        reject(new Error(`timeout reached. timeout ${Pool.TIMEOUT}`))
-      }, Pool.TIMEOUT * TO_SECONDS)
+        reject(new Error(`timeout reached. timeout ${Pool.TIMEOUT}`));
+      }, Pool.TIMEOUT * TO_SECONDS);
 
       listeners.set(id, {
         timeout,
         resolver,
-      })
-    })
+      });
+    });
   }
 
   kill() {
@@ -79,7 +81,7 @@ export class Pool {
 }
 
 export class PoolSingleton extends Pool {
-  static TIMEOUT = 60; // default 60 seconds
+  static TIMEOUT = MINUTE_SECONDS; // default 60 seconds
   static MAX_PROCESSES = MAX_PROCESSES;
   private static instance: PoolSingleton | null = null;
 
