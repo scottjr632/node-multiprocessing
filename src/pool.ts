@@ -77,3 +77,30 @@ export class Pool {
     this.master.kill('SIGINT');
   }
 }
+
+export class PoolSingleton extends Pool {
+  static TIMEOUT = 60; // default 60 seconds
+  static MAX_PROCESSES = MAX_PROCESSES;
+  private static instance: PoolSingleton | null = null;
+
+  private constructor(numProcesses?: number) {
+    super(numProcesses);
+  }
+
+  public static setTimeout(seconds: number) {
+    PoolSingleton.TIMEOUT = seconds;
+  }
+
+  public static setMaxProcesses(maxProcesses: number) {
+    PoolSingleton.MAX_PROCESSES = maxProcesses;
+  }
+
+  public static getInstance(): PoolSingleton {
+    if (!this.instance) {
+      this.instance = new PoolSingleton(PoolSingleton.MAX_PROCESSES);
+    }
+    return this.instance;
+  }
+}
+
+export default PoolSingleton;
