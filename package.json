@@ -49,6 +49,5 @@
   "homepage": "https://github.com/scottjr632/node-multiprocessing#readme",
   "files": [
     "dist/**/*"
-  ],
-  "publishConfig": { "registry": "https://npm.pkg.github.com/@scottjr632" }
+  ]
 }
