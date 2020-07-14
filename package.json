@@ -1,6 +1,6 @@
 {
   "name": "node-multiprocess",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Easy multiprocessing in nodejs",
   "main": "dist/index.js",
   "type": "dist/index.d.ts",
