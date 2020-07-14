@@ -1,7 +1,11 @@
 Easy multiprocessing in nodejs
 ===
+
+[![Version](https://img.shields.io/npm/v/node-multiprocess.svg)](https://npmjs.org/package/node-multiprocess)
+[![Downloads/week](https://img.shields.io/npm/dw/node-multiprocess.svg)](https://npmjs.org/package/node-multiprocess)
+[![License](https://img.shields.io/npm/l/node-multiprocess.svg)](https://github.com/scottjr632/node-multiprocess/blob/master/package.json)
+
 <!-- toc -->
-- [Easy multiprocessing in nodejs](#easy-multiprocessing-in-nodejs)
 - [About](#about)
 - [Install](#install)
 - [Usage](#usage)
